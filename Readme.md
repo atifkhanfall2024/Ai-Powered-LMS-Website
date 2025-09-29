@@ -38,3 +38,11 @@ nodemon – Development utility
 ✅ Environment variables with dotenv
 
 ✅ Fully responsive MERN app
+
+
+## UserModel 
+- make User Model
+- now i make the auth apis 
+
+### signup 
+- /signup api is done

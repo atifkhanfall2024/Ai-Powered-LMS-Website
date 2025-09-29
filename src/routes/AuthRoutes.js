@@ -3,7 +3,7 @@ const Auth = express.Router()
 const {Signup} = require('../controllers/AuthController')
 
 
-Auth.get('/signup' , Signup )
+Auth.post('/signup' , Signup )
 
 
 
