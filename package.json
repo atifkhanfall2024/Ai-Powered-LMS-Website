@@ -1,0 +1,17 @@
+{
+  "name": "lms_ai",
+  "version": "1.0.0",
+  "description": "This is LMS AI based Project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx nodemon src/App.js",
+    "start": "npm node src/App.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Muhammad Atif khan",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0"
+  }
+}
