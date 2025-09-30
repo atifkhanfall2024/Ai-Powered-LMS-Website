@@ -46,3 +46,7 @@ nodemon – Development utility
 
 ### signup 
 - /signup api is done
+
+### Login 
+- making login api as well as secure it also 
+- also use jwt for cookies
