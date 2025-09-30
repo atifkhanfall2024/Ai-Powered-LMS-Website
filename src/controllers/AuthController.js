@@ -80,7 +80,12 @@ const Login  = async(req, res)=>{
 
     const Token = jwt.sign({_id :User.id} , process.env.JWT_SECRET  , {expiresIn:'1h'} )
 
-    res.cookie('Token' , Token)
+    res.cookie('Token' , Token , {
+      httpOnly: true,
+      secure : false,
+      sameSite: "strict",
+      maxAge: 60 * 60 * 1000
+    })
 
     res.json({message: User.fullName  + ' Login SuccessFully'})
     }catch(err){
@@ -90,4 +95,17 @@ const Login  = async(req, res)=>{
 }
 
 
-module.exports = {Signup , Login}
+// Logout api
+
+const Logout = async(req, res)=>{
+
+try{
+     await res.clearCookie("Token")
+   return  res.status(200).json({messgae: 'Logout SuccessFully !'})
+}catch(err){
+  return res.status(400).json({messgae: err.message})
+}
+}
+
+
+module.exports = {Signup , Login , Logout}

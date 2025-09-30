@@ -50,3 +50,5 @@ nodemon – Development utility
 ### Login 
 - making login api as well as secure it also 
 - also use jwt for cookies
+
+### Logout Api also done
