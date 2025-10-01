@@ -4,7 +4,9 @@ require('dotenv').config()
 const ConnectDb = require('./Config/Connection')
 const Auth = require('./routes/AuthRoutes')
 const { connect } = require('mongoose')
+const cookieparser = require('cookie-parser')
 
+app.use(cookieparser())
 app.use(express.json())
 app.use("/" , Auth)
 

@@ -2,6 +2,7 @@ const UserModel = require('../model/UserModel')
 const Valid = require('validator')
 const hashes = require('bcrypt')
 const jwt = require('jsonwebtoken')
+
 require('dotenv').config()
 const Signup = async(req , res)=>{
     try{

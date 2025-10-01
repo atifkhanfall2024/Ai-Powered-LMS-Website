@@ -52,3 +52,7 @@ nodemon – Development utility
 - also use jwt for cookies
 
 ### Logout Api also done
+
+### Working in MiddleWare
+- first i recieve that token which i make then some important security level checks on it 
+- so every time when a user want to access an api then that user will check validation that is this is valid login user or not 
