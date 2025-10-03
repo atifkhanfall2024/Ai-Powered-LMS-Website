@@ -44,7 +44,7 @@ const Signup = async(req , res)=>{
 
       await user.save()
 
-     return res.status(200).json({message: `${fullName} Signup SuccessFully`})
+     return res.status(200).json({message: user})
         
         
 
@@ -88,7 +88,7 @@ const Login  = async(req, res)=>{
       maxAge: 60 * 60 * 1000
     })
 
-    res.json({message: User.fullName  + ' Login SuccessFully'})
+    res.json({message: User})
     }catch(err){
         return res.status(500).json({message:err.message})
     }

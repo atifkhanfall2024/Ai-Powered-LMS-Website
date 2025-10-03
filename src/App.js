@@ -5,10 +5,18 @@ const ConnectDb = require('./Config/Connection')
 const Auth = require('./routes/AuthRoutes')
 const { connect } = require('mongoose')
 const cookieparser = require('cookie-parser')
+const Cors = require('cors')
+const GetUsers = require('./routes/GetUser')
 
+app.use(Cors({
+  origin: "http://localhost:5173", 
+  methods: ["GET", "POST", "PUT", "DELETE"], 
+  credentials: true                 
+}));
 app.use(cookieparser())
 app.use(express.json())
 app.use("/" , Auth)
+app.use("/"  , GetUsers)
 
 
 
