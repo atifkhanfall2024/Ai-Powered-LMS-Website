@@ -7,11 +7,18 @@ const { connect } = require('mongoose')
 const cookieparser = require('cookie-parser')
 const Cors = require('cors')
 const GetUsers = require('./routes/GetUser')
+const session = require("express-session");
 
 app.use(Cors({
   origin: "http://localhost:5173", 
   methods: ["GET", "POST", "PUT", "DELETE"], 
   credentials: true                 
+}));
+app.use(session({
+  secret: process.env.Session_key, 
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 600000 } 
 }));
 app.use(cookieparser())
 app.use(express.json())

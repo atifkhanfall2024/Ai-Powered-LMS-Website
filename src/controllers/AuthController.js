@@ -116,6 +116,9 @@ const OTPVerify = async(req,res)=>{
      // first email will be enter by user 
   const {email} = req.body
 
+  const users = req.user
+  console.log(users);
+
   // generate 6 digit otp 
      const code = Math.floor(100000 + Math.random() * 900000);
        const value = code.toString()
@@ -136,6 +139,11 @@ const OTPVerify = async(req,res)=>{
        
         user.otp=encr
        
+        // to store session email
+
+        req.session.email = email
+
+       // console.log(req.session.email);
       
 
         const transporter = nodemailer.createTransport({
@@ -168,7 +176,13 @@ const OTPVerify = async(req,res)=>{
 
 const VerifyOtp = async (req, res) => {
   try {
-    const { email, otp } = req.body;
+    const { otp } = req.body;
+    const email = req.session.email
+    
+    if (!email) {
+      return res.status(400).json({ message: "Session expired. Please resend OTP." });
+    }
+    console.log(email);
     const user = await UserModel.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -195,8 +209,12 @@ const VerifyOtp = async (req, res) => {
 const NewPassword = async(req,res)=>{
      try{
       
-  const {email , password} = req.body
-
+  const {password} = req.body
+ const email = req.session.email
+    
+    if (!email) {
+      return res.status(400).json({ message: "Session expired. Please resend OTP." });
+    }
    const user = await UserModel.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -214,6 +232,7 @@ const NewPassword = async(req,res)=>{
    const hashedPass = await hashes.hash(password, 10);
 user.password = hashedPass;
 user.isVerify = false
+    req.session.destroy();
 await user.save();
 
      return res.status(201).json('Passward Reset Success')
