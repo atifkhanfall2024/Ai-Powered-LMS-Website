@@ -2,6 +2,8 @@ const UserModel = require('../model/UserModel')
 const Valid = require('validator')
 const hashes = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
+const Hashotp  = require('../utils/HashOtp')
 
 require('dotenv').config()
 const Signup = async(req , res)=>{
@@ -108,5 +110,88 @@ try{
 }
 }
 
+const OTPVerify = async(req,res)=>{
 
-module.exports = {Signup , Login , Logout}
+   try{
+     // first email will be enter by user 
+  const {email} = req.body
+
+  // generate 6 digit otp 
+     const code = Math.floor(100000 + Math.random() * 900000);
+       const value = code.toString()
+
+       const encr = await Hashotp({value})
+
+      
+
+  // then check in database
+
+  const user = await UserModel.findOne({email})
+
+  if(!user){
+    return res.status(401).json({message:"Invalid Email"})
+  }
+
+   // this otp save into database
+       
+        user.otp=encr
+       
+      
+
+        const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,       
+    pass: process.env.EMAIL_PASS   
+  }
+});
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER, 
+      to: email, 
+      subject: "Email Verification OTP",
+      text: `Your OTP code is ${code}. It is valid for 2 minutes.`,
+    };
+     await transporter.sendMail(mailOptions);
+      await user.save()
+      
+    
+         res.status(201).send('OTP Send to your email for verification')
+
+      
+   }catch(err){
+      res.status(401).json({message:err.message})
+   }
+     
+   
+}
+
+const VerifyOtp = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const user = await UserModel.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+   
+  const enteredOtp = otp.toString();
+    const isMatch = await hashes.compare(enteredOtp, user.otp);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid OTP" });
+    }
+
+    user.otp = null;
+    user.otpExpires = null;
+    await user.save();
+
+    res.status(200).json({ message: "OTP verified successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+
+
+
+
+module.exports = {Signup , Login , Logout , OTPVerify , VerifyOtp}

@@ -45,6 +45,16 @@ const UserSchema = new mongoose.Schema(
         "Please provide a valid image URL",
       ],
     },
+   otp: {
+  type: String,
+  required: false, // or just remove required
+  default: null
+},
+otpExpires: {
+  type: Date,
+  default: null
+}
+
   },
   { timestamps: true }
 );
