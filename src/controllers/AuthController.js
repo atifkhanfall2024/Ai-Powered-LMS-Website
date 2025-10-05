@@ -181,6 +181,7 @@ const VerifyOtp = async (req, res) => {
 
     user.otp = null;
     user.otpExpires = null;
+    user.isVerify = true
     await user.save();
 
     res.status(200).json({ message: "OTP verified successfully" });
@@ -189,9 +190,39 @@ const VerifyOtp = async (req, res) => {
   }
 };
 
+// creating new passward 
+
+const NewPassword = async(req,res)=>{
+     try{
+      
+  const {email , password} = req.body
+
+   const user = await UserModel.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+
+     if(user.isVerify != true){
+      return res.status(402).json({message:"Alert : Verification not done"})
+    }
+
+    if(!Valid.isStrongPassword(password)){
+      return res.status(402).json({message:"Passward should be strong"})
+    }
+    
+    
+
+   const hashedPass = await hashes.hash(password, 10);
+user.password = hashedPass;
+user.isVerify = false
+await user.save();
+
+     return res.status(201).json('Passward Reset Success')
+     }catch(err){
+      return res.status(501).json({message:err.message})
+     }
+}
 
 
 
 
-
-module.exports = {Signup , Login , Logout , OTPVerify , VerifyOtp}
+module.exports = {Signup , Login , Logout , OTPVerify , VerifyOtp , NewPassword}
