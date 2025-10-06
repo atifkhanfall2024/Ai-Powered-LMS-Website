@@ -116,8 +116,8 @@ const OTPVerify = async(req,res)=>{
      // first email will be enter by user 
   const {email} = req.body
 
-  const users = req.user
-  console.log(users);
+ // const users = req.user
+  //console.log(users);
 
   // generate 6 digit otp 
      const code = Math.floor(100000 + Math.random() * 900000);
@@ -132,7 +132,7 @@ const OTPVerify = async(req,res)=>{
   const user = await UserModel.findOne({email})
 
   if(!user){
-    return res.status(401).json({message:"Invalid Email"})
+    return res.status(401).json({message:"User Not Present"})
   }
 
    // this otp save into database
@@ -182,7 +182,7 @@ const VerifyOtp = async (req, res) => {
     if (!email) {
       return res.status(400).json({ message: "Session expired. Please resend OTP." });
     }
-    console.log(email);
+   // console.log(email);
     const user = await UserModel.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -242,6 +242,36 @@ await user.save();
 }
 
 
+// google auth
+
+const GoogleAuth = async(req,res)=>{
+  
+  try{
+    const {fullName , email , role} = req.body
+
+    const user = await UserModel.findOne({email})
+
+    if(!user){
+      user = await UserModel.create({
+        fullName, email , role
+      })
+    }
+
+        const Token = jwt.sign({_id :user.id} , process.env.JWT_SECRET  , {expiresIn:'1h'} )
+
+    res.cookie('Token' , Token , {
+      httpOnly: true,
+      secure : false,
+      sameSite: "strict",
+      maxAge: 60 * 60 * 1000
+    })
+    return res.status(201).json({message:user})
+
+  }catch(err){
+     return res.status(501).json({message:err.message})
+  }
 
 
-module.exports = {Signup , Login , Logout , OTPVerify , VerifyOtp , NewPassword}
+}
+
+module.exports = {Signup , Login , Logout , OTPVerify , VerifyOtp , NewPassword , GoogleAuth}
