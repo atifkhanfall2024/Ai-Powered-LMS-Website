@@ -253,7 +253,10 @@ const GoogleAuth = async(req,res)=>{
 
     if(!user){
       user = await UserModel.create({
-        fullName, email , role
+        fullName,
+        email ,
+        role ,
+        isGoogleUser:true
       })
     }
 
