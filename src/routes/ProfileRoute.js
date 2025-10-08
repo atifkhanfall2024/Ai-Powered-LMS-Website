@@ -5,7 +5,7 @@ const upload = require('../middleware/multer')
 const Profile = express.Router()
 
 
-Profile.patch('/edit/profile' , ValidateToekn , upload.single("photoUrl") , EditProfile )
+Profile.post('/edit/profile' , ValidateToekn , upload.single("photoUrl") , EditProfile )
 
 
 

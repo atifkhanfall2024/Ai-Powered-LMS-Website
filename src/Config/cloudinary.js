@@ -1,38 +1,30 @@
-const cloudinary = require('cloudinary').v2;
-require('dotenv').config();
-const fs = require('fs');
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs");
+require("dotenv").config();
 
-
-
-const UploadCloudinary = async(filePath)=>{
-    cloudinary.config({ 
-  cloud_name: process.env.CLOUD_NAME, 
-  api_key: process.env.API_KEY, 
-  api_secret: process.env.SECRET_KEY
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.SECRET_KEY,
 });
 
+const UploadCloudinary = async (filePath) => {
+  try {
+    if (!filePath) return null;
 
+    const result = await cloudinary.uploader.upload(filePath, {
+      resource_type: "auto",
+    });
 
-try{
-  if(!filePath)
-  {
-    return null
+    // delete local file after successful upload
+    fs.unlinkSync(filePath);
+
+    return result.secure_url;
+  } catch (err) {
+    console.error("Cloudinary upload error:", err.message);
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    return null;
   }
- 
-  const Result = await cloudinary.uploader.upload(filePath , resourse_type ='auto')
-   // also to delete upload pics from public folder 
-   fs.unlinkSync(Result)
-  return Result.secure_url
+};
 
-}catch(err){
-   fs.unlinkSync(Result)
-   console.log(err.message);
-}
-
-
-}
-
-
-module.exports = UploadCloudinary
-
-
+module.exports = UploadCloudinary;

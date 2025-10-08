@@ -14,13 +14,13 @@ const EditProfile  = async(req,res)=>{
 
     let photoUrl
 
-    const AvalivbleUpdates = ["fullName" , "description" , "photoUrl"]
-    const Keys =  Object.keys(req.body)
+    // const AvalivbleUpdates = ["fullName" , "description" , "photoUrl"]
+    // const Keys =  Object.keys(req.body)
 
-    const isValidUpdate = Keys.every((key) => AvalivbleUpdates.includes(key));
-    if(!isValidUpdate){
-         return res.status(401).json({message:'Update Not Avalible'})
-    }
+    // const isValidUpdate = Keys.every((key) => AvalivbleUpdates.includes(key));
+    // if(!isValidUpdate){
+    //      return res.status(401).json({message:'Update Not Avalible'})
+    // }
 
      if (fullName && fullName.trim() === "") {
       return res.status(400).json({ message: "Full name cannot be empty" });
@@ -43,7 +43,7 @@ const EditProfile  = async(req,res)=>{
 
     await user.save()
 
-    res.status(200).json({message:"User Successfully Edit his profile"})
+    res.status(200).json({message:user})
  
      
    }

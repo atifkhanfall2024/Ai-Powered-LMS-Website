@@ -62,6 +62,11 @@ otpExpires: {
    type:Boolean,
    default:false
   },
+  EnrolledCourses:{
+  type:Number,
+  default:0,
+  
+  },
   },
 
   { timestamps: true }

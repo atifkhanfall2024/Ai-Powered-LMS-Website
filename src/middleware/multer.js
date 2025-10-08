@@ -1,16 +1,22 @@
-const multer  = require('multer')
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
+// Ensure "public" folder exists
+const uploadDir = path.join(__dirname, "public");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
 
 const storage = multer.diskStorage({
-    destination:(req,file , cb)=>{
-        cb(null , './public')
-    },
-    filename:(req , file ,cb)=>{
-        cb(null , file.originalname)
-    }
-})
+  destination: (req, file, cb) => {
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = Date.now() + "-" + file.originalname;
+    cb(null, uniqueName);
+  },
+});
 
-
-const upload = multer({storage})
-
-module.exports = upload
+const upload = multer({ storage });
+module.exports = upload;
