@@ -11,6 +11,7 @@ const session = require("express-session");
 const Profile = require('./routes/ProfileRoute')
 const Courses = require('./routes/CoursesRoute')
 
+
 app.use(Cors({
   origin: "http://localhost:5173", 
   methods: ["GET", "POST", "PUT", "DELETE"], 

@@ -1,3 +1,4 @@
+const UploadCloudinary = require("../Config/cloudinary")
 const CourseModel = require("../model/CourseModel")
 
 const CreateCourse = async(req,res)=>{
@@ -6,11 +7,11 @@ const CreateCourse = async(req,res)=>{
 
         // here first of all i accept title category from body
 
-        const {course_title , descriptions } = req.body
+        const {course_title , course_Category } = req.body
 
          const Course_create = await CourseModel.create({
              course_title ,
-             descriptions,
+             course_Category,
              Creator : req.user._id
          })
    
@@ -65,6 +66,12 @@ try{
         const {courseid} = req.params
     const {course_title , course_Category , course_subTitle , course_price ,course_level , isPublished , descriptions  } = req.body
 
+    let course_Thumbnails
+
+    if(req.file){
+         course_Thumbnails = await UploadCloudinary(req.file.path)
+    }
+
     if(!courseid){
         return res.status(401).json('Id Not Found')
     }
@@ -79,7 +86,7 @@ try{
 
     // now we update the above data
      
-    const updatee = {course_level , course_Category , course_price , course_subTitle , course_title , descriptions , isPublished}
+    const updatee = {course_level , course_Category , course_price , course_subTitle , course_title , descriptions , isPublished , course_Thumbnails}
 
     const Update_data = await CourseModel.findByIdAndUpdate(courseid , updatee , {new:true})
 
@@ -92,4 +99,42 @@ try{
 }
 
 
-module.exports = {CreateCourse  , GetPublished , GetCreateCourse , UpdateCourse}
+// also work ondelete 
+
+const GetCoursebyid = async(req,res)=>{
+    try{
+
+     const {courseid} = req.params
+   const Course_id = await CourseModel.findById(courseid)
+
+    if(!Course_id){
+ return res.status(401).json('NO any course is Found till now ')
+    }
+
+     return res.status(200).json(Course_id)
+
+    }catch(err){
+        return res.status(501).json(err.message)
+    }
+}
+
+const DeleteCOurse =  async(req,res)=>{
+    try{
+
+        const {courseid} = req.params
+
+        const Course_id = await CourseModel.findById(courseid)
+
+    if(!Course_id){
+ return res.status(401).json('NO any course is Found till now ')
+    }
+
+     await CourseModel.findByIdAndDelete(courseid , {new:true})
+
+     return res.status(200).json('Data Delete Success')
+
+    }catch(err){ return res.status(501).json(err.message)}
+}
+
+
+module.exports = {CreateCourse  , GetPublished , GetCreateCourse , UpdateCourse , GetCoursebyid , DeleteCOurse}

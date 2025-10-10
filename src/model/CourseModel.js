@@ -11,20 +11,20 @@ const courseSchema = new mongoose.Schema(
     },
     course_subTitle: {
       type: String,
-      required: [true, "Course subtitle is required"],
+     // required: [true, "Course subtitle is required"],
       trim: true,
       minlength: [5, "Subtitle must be at least 5 characters"],
       maxlength: [200, "Subtitle must be less than 200 characters"],
     },
     course_price: {
       type: Number,
-      required: [true, "Course price is required"],
+     // required: [true, "Course price is required"],
       min: [0, "Price cannot be negative"],
       default: 0,
     },
     course_Thumbnails: {
       type: String,
-      required: [true, "Thumbnail URL is required"],
+      //required: [true, "Thumbnail URL is required"],
       validate: {
         validator: function (v) {
           return /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/.test(v);
