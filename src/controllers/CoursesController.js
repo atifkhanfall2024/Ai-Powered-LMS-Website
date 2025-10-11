@@ -105,13 +105,13 @@ const GetCoursebyid = async(req,res)=>{
     try{
 
      const {courseid} = req.params
-   const Course_id = await CourseModel.findById(courseid)
+   const Course = await CourseModel.findById(courseid)
 
-    if(!Course_id){
+    if(!Course){
  return res.status(401).json('NO any course is Found till now ')
     }
 
-     return res.status(200).json(Course_id)
+     return res.status(200).json(Course)
 
     }catch(err){
         return res.status(501).json(err.message)
