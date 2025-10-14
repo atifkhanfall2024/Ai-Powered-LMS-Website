@@ -10,6 +10,7 @@ const GetUsers = require('./routes/GetUser')
 const session = require("express-session");
 const Profile = require('./routes/ProfileRoute')
 const Courses = require('./routes/CoursesRoute')
+const Lecture = require('./routes/LecturesRoute')
 
 
 app.use(Cors({
@@ -29,7 +30,7 @@ app.use("/" , Auth)
 app.use("/"  , GetUsers)
 app.use("/" , Profile)
 app.use("/" ,Courses )
-
+app.use('/' , Lecture)
 
 
 
