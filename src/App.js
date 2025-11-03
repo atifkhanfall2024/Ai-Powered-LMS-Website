@@ -34,11 +34,10 @@ app.use('/' , Lecture)
 
 
 
-ConnectDb().then(()=>{
-    console.log('Connection is Success');
-    app.listen(process.env.Port_Number || 3000 , ()=>{
-    console.log("Server is Listening");
-})
-}).catch((err)=>{
-    console.log('Connection Is not Eastablished Success' , err.message);
-})
+ConnectDb()
+  .then(() => {
+    console.log("Connection is Success");
+  })
+  .catch((err) => {
+    console.log("Connection Is not Established Successfully:", err.message);
+  });
