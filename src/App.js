@@ -13,11 +13,17 @@ const Courses = require('./routes/CoursesRoute')
 const Lecture = require('./routes/LecturesRoute')
 
 
-app.use(Cors({
-  origin: "http://localhost:5173", 
-  methods: ["GET", "POST", "PUT", "DELETE"], 
-  credentials: true                 
+const allowedOrigins = [
+  "http://localhost:5173", // for local dev
+  "https://ai-powered-lms-website-frontend-ghvw-cbisprvyt.vercel.app" // ✅ your deployed frontend
+];
+
+app.use(require("cors")({
+  origin: allowedOrigins,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
+
 app.use(session({
   secret: process.env.Session_key, 
   resave: false,
@@ -41,3 +47,5 @@ ConnectDb()
   .catch((err) => {
     console.log("Connection Is not Established Successfully:", err.message);
   });
+
+  module.exports = app;
