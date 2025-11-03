@@ -15,8 +15,8 @@ const Lecture = require('./routes/LecturesRoute')
 
 const allowedOrigins = [
   "http://localhost:5173", // for local dev
-  "https://ai-powered-lms-website-frontend-ghvw-cbisprvyt.vercel.app" ,
-  'https://ai-powered-lms-website-frontend-ghvw-a8sx7rk8k.vercel.app/'// ✅ your deployed frontend
+
+  'https://ai-powered-lms-website-frontend-ghvw-a8sx7rk8k.vercel.app'// ✅ your deployed frontend
 ];
 
 app.use(require("cors")({
