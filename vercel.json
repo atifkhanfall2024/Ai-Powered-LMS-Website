@@ -2,14 +2,19 @@
   "version": 2,
   "builds": [
     {
-      "src": "src/App.js",
+      "src": "src/app.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/App.js"
+      "dest": "src/app.js"
     }
-  ]
+  ],
+  "env": {
+    "MONGO_URL": "@mongo_url",
+    "Session_key": "@session_key",
+    "FIREBASE_API_KEY": "@firebase_api_key"
+  }
 }
