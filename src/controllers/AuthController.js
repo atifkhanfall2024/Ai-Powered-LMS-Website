@@ -84,9 +84,10 @@ const Login  = async(req, res)=>{
     const Token = jwt.sign({_id :User.id} , process.env.JWT_SECRET  , {expiresIn:'1h'} )
 
     res.cookie('Token' , Token , {
-      httpOnly: true,
-      secure : false,
-      sameSite: "strict",
+        httpOnly: true,
+  secure: process.env.NODE_ENV === "production", // true on Vercel
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+     
       maxAge: 60 * 60 * 1000
     })
 
