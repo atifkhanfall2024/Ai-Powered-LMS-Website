@@ -26,11 +26,16 @@ app.use(require("cors")({
 }));
 
 app.use(session({
-  secret: process.env.Session_key, 
+  secret: process.env.Session_key || "default_secret",
   resave: false,
   saveUninitialized: true,
-  cookie: { maxAge: 600000 } 
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: process.env.NODE_ENV === "production", // ✅ required for HTTPS (Vercel)
+  },
 }));
+
 app.use(cookieparser())
 app.use(express.json())
 app.use("/" , Auth)
