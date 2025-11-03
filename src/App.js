@@ -14,7 +14,7 @@ const Lecture = require('./routes/LecturesRoute')
 
 
 const allowedOrigins = [
-  "http://localhost:5173", // for local dev
+  "*", // for local dev
   "https://ai-powered-lms-website-frontend-ghvw-cbisprvyt.vercel.app" // ✅ your deployed frontend
 ];
 
