@@ -11,10 +11,6 @@
       "src": "/(.*)",
       "dest": "src/app.js"
     }
-  ],
-  "env": {
-    "MONGO_URL": "@mongo_url",
-    "Session_key": "@session_key",
-    "FIREBASE_API_KEY": "@firebase_api_key"
-  }
+  ]
 }
+
