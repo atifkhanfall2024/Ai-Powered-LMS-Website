@@ -38,6 +38,9 @@ app.use("/" , Profile)
 app.use("/" ,Courses )
 app.use('/' , Lecture)
 
+app.get("/", (req, res) => {
+  res.send("✅ Backend is running successfully on Vercel!");
+});
 
 
 ConnectDb()
