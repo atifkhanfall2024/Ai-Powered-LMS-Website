@@ -53,7 +53,7 @@ const courseSchema = new mongoose.Schema(
     },
     Lectures: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref : 'Lectures' ,
+      ref : 'Lecture' ,
       min: [0, "Lectures cannot be negative"],
     }],
     Creator: {

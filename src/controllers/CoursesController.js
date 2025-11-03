@@ -28,7 +28,7 @@ const CreateCourse = async(req,res)=>{
 const GetPublished = async(req,res)=>{
 
 try{
-        const Courses = await CourseModel.find({isPublished:true})
+        const Courses = await CourseModel.find({isPublished:true}).populate('Lectures')
     if(!Courses){
         return res.status(401).json('NO any course is Found till now ')
     }

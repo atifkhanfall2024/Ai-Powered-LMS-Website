@@ -11,12 +11,13 @@ const Lectures = new mongoose.Schema({
     type:String
  },
  isFree:{
-    type:Boolean
+    type:Boolean,
+    default:false
  }
 
-})
+}, {timestamps:true})
 
 
-const VedioModel = mongoose.model("Lectures" , Lectures)
+const VedioModel = mongoose.model("Lecture" , Lectures)
 
 module.exports = VedioModel
