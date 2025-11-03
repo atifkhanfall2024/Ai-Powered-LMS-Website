@@ -1,60 +1,64 @@
-const express = require('express')
-const app = express()
-require('dotenv').config()
-const ConnectDb = require('./Config/Connection')
-const Auth = require('./routes/AuthRoutes')
-const { connect } = require('mongoose')
-const cookieparser = require('cookie-parser')
-const Cors = require('cors')
-const GetUsers = require('./routes/GetUser')
-const session = require("express-session");
-const Profile = require('./routes/ProfileRoute')
-const Courses = require('./routes/CoursesRoute')
-const Lecture = require('./routes/LecturesRoute')
+const express = require('express');
+const app = express();
+require('dotenv').config();
+const ConnectDb = require('./Config/Connection');
+const Auth = require('./routes/AuthRoutes');
+const GetUsers = require('./routes/GetUser');
+const Profile = require('./routes/ProfileRoute');
+const Courses = require('./routes/CoursesRoute');
+const Lecture = require('./routes/LecturesRoute');
+const cookieparser = require('cookie-parser');
+const session = require('express-session');
+const Cors = require('cors');
 
-
+// ✅ Allowed origins (no trailing slash!)
 const allowedOrigins = [
-  "http://localhost:5173", // for local dev
-
-  'https://ai-powered-lms-website-frontend-ghvw-a8sx7rk8k.vercel.app'// ✅ your deployed frontend
+  "http://localhost:5173", // local dev
+  "https://ai-powered-lms-website-frontend-ghvw-a8sx7rk8k.vercel.app" // deployed frontend
 ];
 
-app.use(require("cors")({
-  origin: allowedOrigins,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
+// ✅ Enable CORS before other middlewares
+app.use(
+  Cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
-app.use(session({
-  secret: process.env.Session_key || "default_secret",
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    secure: process.env.NODE_ENV === "production", // ✅ required for HTTPS (Vercel)
-  },
-}));
+app.use(express.json());
+app.use(cookieparser());
 
-app.use(cookieparser())
-app.use(express.json())
-app.use("/" , Auth)
-app.use("/"  , GetUsers)
-app.use("/" , Profile)
-app.use("/" ,Courses )
-app.use('/' , Lecture)
+// ✅ Proper session config for Vercel
+app.set("trust proxy", 1); // important for vercel (behind proxy)
+app.use(
+  session({
+    secret: process.env.Session_key || "default_secret",
+    resave: false,
+    saveUninitialized: false, // ✅ prevent unwanted sessions
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: process.env.NODE_ENV === "production", // ✅ required for HTTPS
+    },
+  })
+);
 
+// ✅ Routes
+app.use("/", Auth);
+app.use("/", GetUsers);
+app.use("/", Profile);
+app.use("/", Courses);
+app.use("/", Lecture);
+
+// ✅ Root test
 app.get("/", (req, res) => {
   res.send("✅ Backend is running successfully on Vercel!");
 });
 
-
+// ✅ Database
 ConnectDb()
-  .then(() => {
-    console.log("Connection is Success");
-  })
-  .catch((err) => {
-    console.log("Connection Is not Established Successfully:", err.message);
-  });
+  .then(() => console.log("Connection is Success"))
+  .catch((err) => console.log("Connection failed:", err.message));
 
-  module.exports = app;
+module.exports = app;
