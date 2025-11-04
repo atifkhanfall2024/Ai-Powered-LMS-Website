@@ -14,7 +14,7 @@ const Cors = require('cors');
 // ✅ Allowed origins (no trailing slash!)
 const allowedOrigins = [
   "http://localhost:5173", // local dev
-  "https://ai-powered-lms-fullstack-ghvw-mjazk3h9f.vercel.app/" // deployed frontend
+  "https://ai-powered-lms-fullstack-ghvw-mjazk3h9f.vercel.app" // deployed frontend
 ];
 
 // ✅ Enable CORS before other middlewares
